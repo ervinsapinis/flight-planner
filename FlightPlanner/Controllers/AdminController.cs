@@ -1,7 +1,6 @@
 ﻿using FlightPlanner.Models;
 using FlightPlanner.Storage;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlightPlanner.Controllers
@@ -10,6 +9,8 @@ namespace FlightPlanner.Controllers
     [ApiController]
     public class AdminController : ControllerBase
     {
+        private static readonly object _lock = new();
+
         [HttpGet]
         [Route("Flights/{id}")]
         [Authorize]
@@ -26,8 +27,11 @@ namespace FlightPlanner.Controllers
         [Authorize]
         public IActionResult DeleteFlights(int id)
         {
-            FlightStorage.DeleteFlight(id);
-            return Ok();
+            lock (_lock)
+            {
+                FlightStorage.DeleteFlight(id);
+                return Ok();
+            }
         }
 
         [HttpPut]
@@ -35,13 +39,16 @@ namespace FlightPlanner.Controllers
         [Authorize]
         public IActionResult AddFlights(AddFlightRequest request)
         {
-            if (!FlightStorage.IsValid(request))
-                return BadRequest();
+            lock (_lock)
+            {
+                if (!FlightStorage.IsValid(request))
+                    return BadRequest();
 
-            if (FlightStorage.Exists(request))
-                return Conflict();
+                if (FlightStorage.Exists(request))
+                    return Conflict();
 
-            return Created("", FlightStorage.AddFlight(request));
+                return Created("", FlightStorage.AddFlight(request));
+            }
         }
     }
 }

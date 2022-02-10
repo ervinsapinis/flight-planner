@@ -1,8 +1,6 @@
 ﻿using FlightPlanner.Models;
 using FlightPlanner.Storage;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace FlightPlanner.Controllers
 {
@@ -10,6 +8,8 @@ namespace FlightPlanner.Controllers
     [ApiController]
     public class CustomerApiController : ControllerBase
     {
+
+
         [HttpGet]
         [Route("Airports")]
         public IActionResult SearchAirports(string search)
