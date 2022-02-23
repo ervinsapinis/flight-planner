@@ -10,8 +10,6 @@ namespace FlightPlanner.Controllers
     [ApiController]
     public class CustomerApiController : ControllerBase
     {
-
-
         [HttpGet]
         [Route("Airports")]
         public IActionResult SearchAirports(string search)

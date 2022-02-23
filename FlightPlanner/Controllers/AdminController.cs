@@ -16,7 +16,7 @@ namespace FlightPlanner.Controllers
         [HttpGet]
         [Route("Flights/{id}")]
         [Authorize]
-        public IActionResult GetFlights(int id)
+        public IActionResult GetFlight(int id)
         {
             var flight = FlightStorage.GetFlight(id);
             if (flight == null)
@@ -27,7 +27,7 @@ namespace FlightPlanner.Controllers
         [HttpDelete]
         [Route("Flights/{id}")]
         [Authorize]
-        public IActionResult DeleteFlights(int id)
+        public IActionResult DeleteFlight(int id)
         {
             lock (_lock)
             {
@@ -39,7 +39,7 @@ namespace FlightPlanner.Controllers
         [HttpPut]
         [Route("Flights")]
         [Authorize]
-        public IActionResult AddFlights(AddFlightRequest request)
+        public IActionResult AddFlight(AddFlightRequest request)
         {
             lock (_lock)
             {
